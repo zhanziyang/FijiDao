@@ -117,7 +117,8 @@ class GenericDao {
   }
 
   async findAll() {
-    const result = await this.createQuery().exec();
+    const query = await this.createQuery();
+    const result = await query.exec();
     return toJSON(result);
   }
 }
