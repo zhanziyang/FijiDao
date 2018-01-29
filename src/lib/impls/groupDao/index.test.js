@@ -125,21 +125,15 @@ describe('matching subscribe tests', () => {
     await groupDao.clear();
   });
 
-  it(
-    'subscribe groups insert change',
-    async (done) => {
-      sub = await groupDao.watch((evt) => {
-        expect(evt.data.op).toEqual('INSERT');
-      });
+  it('subscribe groups insert change', async (done) => {
+    sub = await groupDao.watch((evt) => {
+      expect(evt.data.op).toEqual('INSERT');
+      sub.unsubscribe();
+      done();
+    });
 
-      await groupDao.importDump(mockdata.slice(11, 14));
-      setTimeout(() => {
-        sub.unsubscribe();
-        done();
-      }, 5000);
-    },
-    10000,
-  );
+    await groupDao.insert(mockdata[10]);
+  });
 
   it('subscribe groups change change', async (done) => {
     sub = await groupDao.watch((evt) => {
