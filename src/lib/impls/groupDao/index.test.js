@@ -112,6 +112,18 @@ describe('matching query tests', () => {
     expect(result.length).toEqual(10);
     expect(result.every((item, index) => item.id === mockdata[index].id)).toEqual(true);
   });
+
+  it('query with regex', async () => {
+    const q = await groupDao.createQuery()
+    const result = await q.where('type').regex(/ea/).exec();
+    expect(result.every((item, index) => item.type === 'Team')).toEqual(true);
+  });
+
+  it('query with regex - two fields', async () => {
+    const q = await groupDao.createQuery()
+    const result = await q.where('type').regex(/ea/).where('name').regex(/Dev/).exec();
+    expect(result.every((item, index) => item.type === 'Team' && item.name.search(/Dev/) >= 0)).toEqual(true);
+  });
 });
 
 
