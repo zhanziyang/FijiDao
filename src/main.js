@@ -1,4 +1,5 @@
 import DbManager from './lib/base/dbManager';
 import GroupDao from './lib/impls/groupDao';
+import Transaction from './lib/base/Transaction';
 
-export { DbManager, GroupDao };
+export { DbManager, GroupDao, Transaction };

@@ -8,6 +8,15 @@ class GenericDao {
     this.schema = schema;
     this.schemaVersion = schema.version;
     this.queryController = new QueryController({ db, schema });
+    this.primaryKey = undefined;
+    let keys = Object.keys(this.schema.properties);
+    for (let i = 0, len = keys.length; i < len; i++) {
+      let key = keys[i];
+      let value = schema.properties[key];
+      if (value.primary) {
+        this.primaryKey = key;
+      }
+    }
   }
 
   async watch(listener) {
@@ -50,6 +59,7 @@ class GenericDao {
       result = await collection.insert(obj);
     }
     if (result) {
+      // console.log('inserting', result)
       return toJSON(result);
     }
     return false;

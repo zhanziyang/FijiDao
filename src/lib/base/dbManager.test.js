@@ -1,5 +1,5 @@
 import RxDB from 'rxdb';
-import DbManager from './dbManager';
+import DbManager from './DbManager';
 
 const dbOptions = {
   ignoreDuplicate: false, // do not allow create duplicate dbs with the same name

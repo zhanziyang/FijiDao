@@ -1,5 +1,6 @@
 import GroupDao from '.';
-import DbManager from './../../base/dbManager';
+import DbManager from './../../base/DbManager';
+import Transaction from './../../base/Transaction';
 import mockdata from './mockdata';
 
 let db;
@@ -165,3 +166,63 @@ describe('matching subscribe tests', () => {
     });
   });
 });
+
+describe('transaction', () => {
+  beforeEach(async () => {
+    await groupDao.importDump(mockdata.slice(0, 10));
+  });
+
+  afterEach(async () => {
+    await groupDao.clear();
+  });
+
+  it('should revert the first insert operation', async () => {
+    const tx = new Transaction();
+    try {
+      await tx.use(groupDao).insert(mockdata[10]);
+      await tx.use(groupDao).insert(mockdata[0], {
+        upsert: false
+      });
+    } catch (err) {
+      await tx.rollback();
+    } finally {
+      const doc = await groupDao.find({ key: mockdata[10].id });
+      expect(doc).toBe(null);
+    }
+  })
+
+  it('should revert the remove operation', async () => {
+    const tx = new Transaction();
+    try {
+      await tx.use(groupDao).remove({ key: mockdata[1].id });
+      await tx.use(groupDao).insert(mockdata[0], {
+        upsert: false
+      });
+    } catch (err) {
+      await tx.rollback();
+    } finally {
+      const doc = await groupDao.find({ key: mockdata[1].id });
+      expect(doc).not.toBe(null);
+    }
+  })
+
+  it('should revert the update operation', async () => {
+    const tx = new Transaction();
+    try {
+      await tx.use(groupDao).update({
+        key: mockdata[1].id,
+        attrs: {
+          name: 'HAHAHAHAHAH'
+        }
+      });
+      await tx.use(groupDao).insert(mockdata[0], {
+        upsert: false
+      });
+    } catch (err) {
+      await tx.rollback();
+    } finally {
+      const doc = await groupDao.find({ key: mockdata[1].id });
+      expect(doc.name).not.toBe('HAHAHAHAHAH');
+    }
+  })
+})
