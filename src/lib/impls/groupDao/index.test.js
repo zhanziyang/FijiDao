@@ -102,17 +102,18 @@ describe('matching query tests', () => {
     expect(result.length).toEqual(7);
     expect(result.every((item, index) => item.id === mockdata[index + 7].id)).toEqual(true);
   });
+
+  it('query with pagination', async () => {
+    const result = await groupDao.queryWithPagination({
+      time: '2018-01-28T07:15:22.558Z',
+      direction: -1,
+      size: 10
+    })
+    expect(result.length).toEqual(10);
+    expect(result.every((item, index) => item.id === mockdata[index].id)).toEqual(true);
+  });
 });
 
-it('query with pagination', async () => {
-  const result = await groupDao.queryWithPagination({
-    time: '2018-01-27T07:15:22.558Z',
-    direction: -1,
-    size: 10
-  })
-  expect(result.length).toEqual(10);
-  expect(result.every((item, index) => item.id === mockdata[index].id)).toEqual(true);
-});
 
 describe('matching subscribe tests', () => {
   let sub;

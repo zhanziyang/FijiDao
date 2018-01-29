@@ -1,4 +1,5 @@
 import GenericDao from './../../base/genericDao';
+// import { toJSON } from './../../base/util';
 import schema from './schema.js';
 
 class GroupDao extends GenericDao {
