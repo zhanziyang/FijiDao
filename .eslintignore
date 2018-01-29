@@ -1,0 +1,8 @@
+node_modules/**
+config
+examples
+tools
+build
+dist
+*.config.js
+

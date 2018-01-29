@@ -1,0 +1,36 @@
+{
+  "name": "fiji-dao",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "babel-polyfill": "^6.23.0",
+    "jest": "^18.1.0",
+    "pouchdb-adapter-idb": "^6.1.2",
+    "pouchdb-replication": "^6.1.2",
+    "pouchdb-server": "^2.3.4",
+    "rxdb": "^7.3.2",
+    "rxjs": "^5.5.6"
+  },
+  "devDependencies": {
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-loader": "^1.8.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.6.0",
+    "fake-indexeddb": "^2.0.3",
+    "react-scripts": "^0.9.0",
+    "rimraf": "^2.6.1"
+  },
+  "scripts": {
+    "dev": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject",
+    "start": "react-scripts start"
+  },
+  "author": "",
+  "license": "ISC"
+}
