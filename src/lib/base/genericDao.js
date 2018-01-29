@@ -115,6 +115,11 @@ class GenericDao {
   async createQuery(options) {
     return this.queryController.init(options);
   }
+
+  async findAll() {
+    const result = await this.createQuery().exec();
+    return toJSON(result);
+  }
 }
 
 export default GenericDao;
