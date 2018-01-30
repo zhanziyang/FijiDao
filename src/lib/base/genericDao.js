@@ -1,5 +1,5 @@
 import { getCollection, getDocument, toJSON } from './util';
-import QueryController from './queryController';
+import QueryController from './QueryController';
 
 class GenericDao {
   constructor({ db, schema }) {
@@ -9,10 +9,10 @@ class GenericDao {
     this.schemaVersion = schema.version;
     this.queryController = new QueryController({ db, schema });
     this.primaryKey = undefined;
-    let keys = Object.keys(this.schema.properties);
-    for (let i = 0, len = keys.length; i < len; i++) {
-      let key = keys[i];
-      let value = schema.properties[key];
+    const keys = Object.keys(this.schema.properties);
+    for (let i = 0, len = keys.length; i < len; i += 1) {
+      const key = keys[i];
+      const value = schema.properties[key];
       if (value.primary) {
         this.primaryKey = key;
       }

@@ -1,4 +1,4 @@
-import TransactionDao from './TransactionDao'
+import TransactionDao from './TransactionDao';
 
 class Transaction {
   constructor() {
@@ -10,9 +10,10 @@ class Transaction {
   }
 
   rollback() {
-    return this.operations.reduce(async (prev, current) => {
-      return prev.then(await current.rollback());
-    }, Promise.resolve());
+    return this.operations.reduce(
+      async (prev, current) => prev.then(await current.rollback()),
+      Promise.resolve(),
+    );
   }
 }
 

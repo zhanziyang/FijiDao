@@ -108,22 +108,23 @@ describe('matching query tests', () => {
     const result = await groupDao.queryWithPagination({
       time: '2018-01-28T07:15:22.558Z',
       direction: -1,
-      size: 10
-    })
+      size: 10,
+    });
     expect(result.length).toEqual(10);
     expect(result.every((item, index) => item.id === mockdata[index].id)).toEqual(true);
   });
 
   it('query with regex', async () => {
-    const q = await groupDao.createQuery()
+    const q = await groupDao.createQuery();
     const result = await q.where('type').regex(/ea/).exec();
-    expect(result.every((item, index) => item.type === 'Team')).toEqual(true);
+    expect(result.every(item => item.type === 'Team')).toEqual(true);
   });
 
   it('query with regex - two fields', async () => {
-    const q = await groupDao.createQuery()
-    const result = await q.where('type').regex(/ea/).where('name').regex(/Dev/).exec();
-    expect(result.every((item, index) => item.type === 'Team' && item.name.search(/Dev/) >= 0)).toEqual(true);
+    const q = await groupDao.createQuery();
+    const result = await q.where('type').regex(/ea/).where('name').regex(/Dev/)
+      .exec();
+    expect(result.every(item => item.type === 'Team' && item.name.search(/Dev/) >= 0)).toEqual(true);
   });
 });
 
@@ -181,7 +182,7 @@ describe('transaction', () => {
     try {
       await tx.use(groupDao).insert(mockdata[10]);
       await tx.use(groupDao).insert(mockdata[0], {
-        upsert: false
+        upsert: false,
       });
     } catch (err) {
       await tx.rollback();
@@ -189,14 +190,14 @@ describe('transaction', () => {
       const doc = await groupDao.find({ key: mockdata[10].id });
       expect(doc).toBe(null);
     }
-  })
+  });
 
   it('should revert the remove operation', async () => {
     const tx = new Transaction();
     try {
       await tx.use(groupDao).remove({ key: mockdata[1].id });
       await tx.use(groupDao).insert(mockdata[0], {
-        upsert: false
+        upsert: false,
       });
     } catch (err) {
       await tx.rollback();
@@ -204,7 +205,7 @@ describe('transaction', () => {
       const doc = await groupDao.find({ key: mockdata[1].id });
       expect(doc).not.toBe(null);
     }
-  })
+  });
 
   it('should revert the update operation', async () => {
     const tx = new Transaction();
@@ -212,11 +213,11 @@ describe('transaction', () => {
       await tx.use(groupDao).update({
         key: mockdata[1].id,
         attrs: {
-          name: 'HAHAHAHAHAH'
-        }
+          name: 'HAHAHAHAHAH',
+        },
       });
       await tx.use(groupDao).insert(mockdata[0], {
-        upsert: false
+        upsert: false,
       });
     } catch (err) {
       await tx.rollback();
@@ -224,5 +225,5 @@ describe('transaction', () => {
       const doc = await groupDao.find({ key: mockdata[1].id });
       expect(doc.name).not.toBe('HAHAHAHAHAH');
     }
-  })
-})
+  });
+});

@@ -80,7 +80,7 @@ class DbManager {
 
   static watch(database, listener) {
     const db = RxDB.isRxDatabase(database) ? database : this.get(database);
-    return db.$.subscribe(listener)
+    return db.$.subscribe(listener);
   }
 }
 

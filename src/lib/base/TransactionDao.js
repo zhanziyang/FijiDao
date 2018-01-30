@@ -1,5 +1,4 @@
-import GenericDao from './GenericDao'
-import TransactionOperation from './TransactionOperation'
+import TransactionOperation from './TransactionOperation';
 
 class TransactionDao {
   constructor(dao, transaction) {
@@ -13,8 +12,7 @@ class TransactionDao {
       type,
       args,
     });
-    let result;
-    result = await op.exec();
+    const result = await op.exec();
     this.transaction.operations.push(op);
     return result;
   }

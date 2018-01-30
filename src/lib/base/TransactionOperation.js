@@ -17,13 +17,17 @@ class TransactionOperation {
       case 'REMOVE':
         this.backup = await this.dao.find({ key: this.args[0].key });
         return this.dao.remove(...this.args);
+      default:
+        this.backup = await this.dao.find({ key: this.args[0].key });
+        return this.dao.update(...this.args);
     }
   }
 
   rollback() {
+    /* eslint-disable no-underscore-dangle */
     switch (this.type) {
       case 'INSERT': {
-        let primaryKey = this.dao.primaryKey;
+        const { primaryKey } = this.dao;
         return this.dao.remove({ key: this.args[0][primaryKey] });
       }
 
@@ -38,6 +42,14 @@ class TransactionOperation {
       case 'REMOVE': {
         delete this.backup._rev;
         return this.dao.insert(this.backup);
+      }
+
+      default: {
+        delete this.backup._rev;
+        return this.dao.update({
+          key: this.args[0].key,
+          attrs: this.backup,
+        });
       }
     }
   }
